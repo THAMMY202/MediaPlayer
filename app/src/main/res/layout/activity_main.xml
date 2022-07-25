@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
+    android:layout_margin="16dp"
     tools:context=".MainActivity">
 
 
@@ -13,7 +14,7 @@
         android:layout_alignParentStart="true"
         android:id ="@+id/visualizerBar"
         android:layout_width = "match_parent"
-        android:layout_height = "240dp"/>
+        android:layout_height = "300dp"/>
 
     <RelativeLayout
         android:layout_width="368dp"
@@ -49,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <ImageView
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/pauseBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -62,7 +63,7 @@
             android:src="@drawable/ic_baseline_pause_circle_outline_24"
             />
 
-        <Button
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/playBtn"
             android:layout_width="88dp"
             android:layout_height="wrap_content"
@@ -71,12 +72,10 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="Play"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/stopBtn"
-            app:layout_constraintStart_toEndOf="@+id/pauseBtn"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:src="@drawable/ic_baseline_play_circle_outline_24"
+        />
 
-        <Button
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/stopBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -86,9 +85,7 @@
             android:layout_marginTop="8dp"
             android:enabled="false"
             android:text="Stop"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:src="@drawable/ic_baseline_stop_circle_24"/>
     </LinearLayout>
 
 

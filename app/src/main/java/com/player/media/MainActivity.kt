@@ -3,11 +3,11 @@ package com.player.media
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.widget.SeekBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import android.view.View
 import androidx.core.content.ContextCompat
 import com.chibde.visualizer.BarVisualizer
 
@@ -26,42 +26,54 @@ class MainActivity : AppCompatActivity() {
 
         // Start the media player
         playBtn.setOnClickListener{
-            if(pause){
-                mediaPlayer.seekTo(mediaPlayer.currentPosition)
-                mediaPlayer.start()
-                pause = false
-                barVisualization()
-                Toast.makeText(this,"media playing",Toast.LENGTH_SHORT).show()
-            }else{
+            try {
+                if(pause){
+                    mediaPlayer.seekTo(mediaPlayer.currentPosition)
+                    mediaPlayer.start()
+                    pause = false
+                    barVisualization()
+                    Toast.makeText(this,"media playing",Toast.LENGTH_SHORT).show()
+                }else{
 
-                mediaPlayer = MediaPlayer.create(applicationContext,R.raw.school_bell)
-                mediaPlayer.start()
-                barVisualization()
-                Toast.makeText(this,"media playing",Toast.LENGTH_SHORT).show()
+                    mediaPlayer = MediaPlayer.create(applicationContext,R.raw.school_bell)
+                    mediaPlayer.start()
+                    barVisualization()
+                    Toast.makeText(this,"media playing",Toast.LENGTH_SHORT).show()
+                }
 
-            }
-            initializeSeekBar()
-            playBtn.isEnabled = false
-            pauseBtn.isEnabled = true
-            stopBtn.isEnabled = true
+                initializeSeekBar()
+                playBtn.isEnabled = false
+                pauseBtn.isEnabled = true
+                stopBtn.isEnabled = true
 
-            mediaPlayer.setOnCompletionListener {
-                playBtn.isEnabled = true
-                pauseBtn.isEnabled = false
-                stopBtn.isEnabled = false
-                Toast.makeText(this,"end",Toast.LENGTH_SHORT).show()
+                mediaPlayer.setOnCompletionListener {
+                    playBtn.isEnabled = true
+                    pauseBtn.isEnabled = false
+                    stopBtn.isEnabled = false
+                    Toast.makeText(this,"end",Toast.LENGTH_SHORT).show()
+                }
+            }catch (e:Exception){
+                Log.d(TAG,e.toString())
+                showMsg(e.toString())
             }
         }
+
         // Pause the media player
         pauseBtn.setOnClickListener {
-            if(mediaPlayer.isPlaying){
-                mediaPlayer.pause()
-                pause = true
-                playBtn.isEnabled = true
-                pauseBtn.isEnabled = false
-                stopBtn.isEnabled = true
-                Toast.makeText(this,"media pause",Toast.LENGTH_SHORT).show()
+            try{
+                if(mediaPlayer.isPlaying){
+                    mediaPlayer.pause()
+                    pause = true
+                    playBtn.isEnabled = true
+                    pauseBtn.isEnabled = false
+                    stopBtn.isEnabled = true
+                    Toast.makeText(this,"media pause",Toast.LENGTH_SHORT).show()
+                }
+            }catch (e:Exception){
+                Log.d(TAG,e.toString())
+                showMsg(e.toString())
             }
+
         }
         // Stop the media player
         stopBtn.setOnClickListener{
@@ -98,7 +110,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    // Method to initialize seek bar and audio stats
     private fun initializeSeekBar() {
         seek_bar.max = mediaPlayer.seconds
 
@@ -114,28 +125,31 @@ class MainActivity : AppCompatActivity() {
         handler.postDelayed(runnable, 1000)
     }
 
-    // Creating an extension property to get the media player time duration in seconds
-    val MediaPlayer.seconds: Int
+
+    private val MediaPlayer.seconds: Int
         get() {
             return this.duration / 1000
         }
 
-    // Creating an extension property to get media player current position in seconds
-    val MediaPlayer.currentSeconds: Int
+    private val MediaPlayer.currentSeconds: Int
         get() {
             return this.currentPosition / 1000
         }
 
     private fun barVisualization() {
         val barVisualizer = findViewById<BarVisualizer>(R.id.visualizerBar)
-        // set the custom color to the line.
-        barVisualizer.setColor(ContextCompat.getColor(this,R.color.myColor2))
-
-        // define a custom number of bars we want in the visualizer it is between (10 - 256).
+        barVisualizer.setColor(ContextCompat.getColor(this,R.color.myColor1))
         barVisualizer.setDensity(80f)
-
-        // Set your media player to the visualizer.
         barVisualizer.setPlayer(mediaPlayer.audioSessionId)
+    }
+
+    companion object {
+        val TAG = MainActivity::class.qualifiedName
+    }
+
+    private fun showMsg(msg: String) {
+        val toast = Toast.makeText(this@MainActivity, msg, Toast.LENGTH_LONG)
+        toast.show()
     }
 
 }
